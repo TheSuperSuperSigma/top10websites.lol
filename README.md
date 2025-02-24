@@ -1,3 +1,12 @@
+git add .
+git commit -m "Change to what you did"
+git push origin main
+
+
+
+
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
