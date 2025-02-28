@@ -22,7 +22,7 @@ export default function MobilePage() {
           <Link href="https://top10websites.my.canva.site/top-10-big-black-people" className="hover:underline">
             Top 10 Big Black People
           </Link>
-          <Link href="https://top10websites.my.canva.site/copy-of-top-10-athiei-lookalikes-1" className="hover:underline">
+          <Link href="https://top10websites.my.canva.site/top-10-athiei-lookalikes" className="hover:underline">
             Top 10 Athiei Lookalikes
           </Link>
           <Link href="https://example.com" className="hover:underline">
