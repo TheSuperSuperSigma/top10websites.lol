@@ -16,7 +16,7 @@ export default function Home() {
         router.push("/mobile");
       }
     }
-  }, []);
+  }, [router]); // Added router as a dependency
 
   return (
     <>

@@ -1,5 +1,5 @@
 // src/lib/authService.js
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "firebase/auth";
+import { signInWithPopup, onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, provider } from "./firebaseConfig"; // Import auth and provider from firebaseConfig
 
 // Google Authentication function
