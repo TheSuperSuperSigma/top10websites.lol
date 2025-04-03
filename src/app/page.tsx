@@ -85,7 +85,7 @@ export default function Home() {
 
         {/* Uppy Section */}
         <div className="absolute bottom-20 text-center w-full">
-          <Link href="https://top10webistes.lol/unskool" className="text-[36px] font-bold text-black hover:underline">
+          <Link href="https://top10websites.lol/unskool" className="text-[36px] font-bold text-black hover:underline">
             unskool
           </Link>
         </div>

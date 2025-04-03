@@ -53,7 +53,7 @@ export default function MobilePage() {
 
         {/* Uppy */}
         <div className="mt-10">
-          <Link href="https://top10webistes.lol/unskool" className="text-[24px] font-bold text-black hover:underline">
+          <Link href="https://top10websites.lol/unskool" className="text-[24px] font-bold text-black hover:underline">
             unskool
           </Link>
         </div>
