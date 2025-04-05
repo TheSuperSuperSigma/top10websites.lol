@@ -1,33 +1,30 @@
-// src/lib/firebaseConfig.js
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getAnalytics } from "firebase/analytics";
 
-// Debugging: Log environment variables
-console.log("Auth Domain:", process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN);
-console.log("API Key:", process.env.NEXT_PUBLIC_FIREBASE_API_KEY ? "Loaded" : "Missing");
-
-// Firebase configuration from environment variables
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  apiKey: "AIzaSyDb_saLnE7wkEX0YWH3WDUZOtoQzByuBes",
+  authDomain: "top10websiteslolslashunskool.firebaseapp.com",
+  projectId: "top10websiteslolslashunskool",
+  storageBucket: "top10websiteslolslashunskool.firebasestorage.app",
+  messagingSenderId: "755673057058",
+  appId: "1:755673057058:web:341e335f55a576e71c877b",
+  measurementId: "G-Q8EFH8EG7P"
 };
 
-
-// Initialize Firebase app
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firebase Authentication and Google Auth Provider
+// Initialize services
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-
-// Initialize Firestore
 const db = getFirestore(app);
+let analytics;
 
-// Export auth, provider, and db to use in other parts of the app
-export { auth, provider, db };
+// Only initialize analytics on the client side
+if (typeof window !== 'undefined') {
+  analytics = getAnalytics(app);
+}
+
+export { auth, provider, db, analytics };

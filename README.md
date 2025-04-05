@@ -1,5 +1,7 @@
 git add .
+
 git commit -m "Change to what you did"
+
 git push origin main
 
 
