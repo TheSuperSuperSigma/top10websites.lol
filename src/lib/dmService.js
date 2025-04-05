@@ -7,8 +7,8 @@ import {
   orderBy, 
   onSnapshot,
   limit,
-  where,
-  or 
+  where
+  // Removed unused 'or' import
 } from "firebase/firestore";
 
 // Helper to create a consistent chat ID between two users
@@ -107,6 +107,7 @@ export function listenForDMChats(callback) {
     callback(Array.from(uniqueChats));
   });
 }
+
 
 
 

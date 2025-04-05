@@ -13,7 +13,7 @@ import { User } from "firebase/auth";
 import { Timestamp } from "firebase/firestore";
 import DirectMessage from './DirectMessage';
 
-interface FriendRequest {
+interface FriendRequestData {
   id: string;
   from: string;
   to: string;
@@ -31,8 +31,13 @@ interface Props {
   user: User | null;
 }
 
+// Custom error type
+interface CustomError {
+  message: string;
+}
+
 export default function FriendSidebar({ user }: Props) {
-  const [friendRequests, setFriendRequests] = useState<FriendRequest[]>([]);
+  const [friendRequests, setFriendRequests] = useState<FriendRequestData[]>([]);
   const [friends, setFriends] = useState<Friend[]>([]);
   const [usernameToAdd, setUsernameToAdd] = useState("");
   const [loading, setLoading] = useState(true);
@@ -58,22 +63,26 @@ export default function FriendSidebar({ user }: Props) {
       return;
     }
 
-    const unsubscribe = listenForFriendRequests(user.uid, async (requests: any[]) => {
-      try {
-        const enrichedRequests = await Promise.all(
-          requests.map(async (request) => {
+    const unsubscribe = listenForFriendRequests(user.uid, (requests: FriendRequestData[]) => {
+      Promise.all(
+        requests.map(async (request) => {
+          try {
             const userData = await getUserData(request.from);
             return {
               ...request,
               fromUsername: userData?.username || 'Unknown'
             };
-          })
-        );
-        setFriendRequests(enrichedRequests);
-      } catch (err) {
-        setError("Failed to load friend requests");
-        console.error(err);
-      }
+          } catch (err) {
+            console.error("Error enriching request:", err);
+            return request;
+          }
+        })
+      )
+        .then(enrichedRequests => setFriendRequests(enrichedRequests))
+        .catch(err => {
+          setError("Failed to load friend requests");
+          console.error(err);
+        });
     });
 
     return () => {
@@ -87,24 +96,30 @@ export default function FriendSidebar({ user }: Props) {
       return;
     }
 
-    const unsubscribe = listenForFriends(user.uid, async (friendIds: string[]) => {
-      try {
-        const enrichedFriends = await Promise.all(
-          friendIds.map(async (id) => {
+    const unsubscribe = listenForFriends(user.uid, (friendIds: string[]) => {
+      Promise.all(
+        friendIds.map(async (id) => {
+          try {
             const userData = await getUserData(id);
             return {
               id,
               username: userData?.username || 'Unknown'
             };
-          })
-        );
-        setFriends(enrichedFriends);
-      } catch (err) {
-        setError("Failed to load friends");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
+          } catch (err) {
+            console.error("Error enriching friend:", err);
+            return { id, username: 'Unknown' };
+          }
+        })
+      )
+        .then(enrichedFriends => {
+          setFriends(enrichedFriends);
+          setLoading(false);
+        })
+        .catch(err => {
+          setError("Failed to load friends");
+          console.error(err);
+          setLoading(false);
+        });
     });
 
     return () => {
@@ -121,8 +136,9 @@ export default function FriendSidebar({ user }: Props) {
       setNewUsername("");
       setShowUsernameChange(false);
       setError(null);
-    } catch (error: any) {
-      setError(error?.message || "Failed to update username");
+    } catch (error) {
+      const customError = error as CustomError;
+      setError(customError.message || "Failed to update username");
     }
   };
 
@@ -140,12 +156,13 @@ export default function FriendSidebar({ user }: Props) {
       await sendFriendRequest(user.uid, usernameToAdd);
       setUsernameToAdd("");
       alert("Friend request sent!");
-    } catch (error: any) {
-      setError(error?.message || "An unknown error occurred");
+    } catch (error) {
+      const customError = error as CustomError;
+      setError(customError.message || "An unknown error occurred");
     }
   };
 
-  const handleAccept = async (request: FriendRequest) => {
+  const handleAccept = async (request: FriendRequestData) => {
     if (!user?.uid) {
       setError("You must be logged in to accept friend requests");
       return;
@@ -155,8 +172,9 @@ export default function FriendSidebar({ user }: Props) {
       setError(null);
       await acceptFriendRequest(request.id, request.from, request.to);
       alert("Friend request accepted!");
-    } catch (error: any) {
-      setError(error?.message || "An unknown error occurred");
+    } catch (error) {
+      const customError = error as CustomError;
+      setError(customError.message || "An unknown error occurred");
     }
   };
 
