@@ -7,6 +7,7 @@ import { sendMessage, listenForMessages, loadMoreMessages } from "@/lib/chatServ
 import { uploadImage } from "@/lib/storageService";
 import FriendSidebar from "./FriendSidebar";
 import Image from 'next/image';
+import { Timestamp } from 'firebase/firestore';
 
 interface Message {
   id: string;
@@ -19,7 +20,13 @@ interface Message {
 
 interface FirestoreDoc {
   id: string;
-  data(): any;
+  data(): {
+    text: string;
+    imageUrl?: string;
+    username: string;
+    timestamp: Timestamp;
+    userId: string;
+  };
 }
 
 export default function ChatPage() {
