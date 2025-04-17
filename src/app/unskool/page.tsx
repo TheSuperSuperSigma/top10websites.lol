@@ -6,6 +6,7 @@ import { googleSignIn, googleSignOut, listenForAuthChanges } from "@/lib/authSer
 import { sendMessage, listenForMessages, loadMoreMessages } from "@/lib/chatService";
 import { uploadImage } from "@/lib/storageService";
 import FriendSidebar from "./FriendSidebar";
+import Image from 'next/image';
 
 interface Message {
   id: string;
@@ -16,13 +17,18 @@ interface Message {
   userId: string;
 }
 
+interface FirestoreDoc {
+  id: string;
+  data(): any;
+}
+
 export default function ChatPage() {
   const [user, setUser] = useState<User | null>(null);
   const [showFriends, setShowFriends] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const [lastDoc, setLastDoc] = useState<any>(null);
+  const [lastDoc, setLastDoc] = useState<FirestoreDoc | null>(null);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [allMessagesLoaded, setAllMessagesLoaded] = useState(false);
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
@@ -41,14 +47,12 @@ export default function ChatPage() {
       
       if (scrollTop === 0) {
         setIsLoadingMore(true);
-        const moreMessages = await loadMoreMessages(lastDoc, 250); // Set limit to 250 messages
+        const moreMessages = (await loadMoreMessages(lastDoc, 250)) as Message[]; // Type assertion to Message[]
         
-        if (moreMessages.length === 0) {
-          setAllMessagesLoaded(true);
+        if (moreMessages.length > 0) {
+          setLastDoc(moreMessages[moreMessages.length - 1] as unknown as FirestoreDoc);
         } else {
-          setShouldScrollToBottom(false);
-          setMessages((prev: Message[]) => [...(moreMessages as Message[]), ...prev]);
-          setLastDoc(moreMessages[0]);
+          setAllMessagesLoaded(true);
         }
         setIsLoadingMore(false);
       }
@@ -79,7 +83,7 @@ export default function ChatPage() {
   useEffect(() => {
     if (!user) return;
 
-    const unsubscribe = listenForMessages((msgs: Message[], firstDoc: any) => {
+    const unsubscribe = listenForMessages((msgs: Message[], firstDoc: FirestoreDoc) => {
       setMessages(msgs);
       setLastDoc(firstDoc);
       setShouldScrollToBottom(true);
@@ -229,12 +233,17 @@ export default function ChatPage() {
               >
                 {message.text}
                 {message.imageUrl && (
-                  <img 
-                    src={message.imageUrl} 
-                    alt="Shared image" 
-                    className="max-w-full mt-2 rounded-lg"
-                    style={{ maxHeight: '300px' }}
-                  />
+                  <div className="mt-2">
+                    <Image 
+                      src={message.imageUrl} 
+                      alt="Shared image" 
+                      width={300}
+                      height={300}
+                      className="rounded-lg"
+                      style={{ objectFit: 'contain' }}
+                      unoptimized
+                    />
+                  </div>
                 )}
               </div>
             </div>

@@ -1,0 +1,12 @@
+Error: Invalid src prop (https://i.ibb.co/PzmgqQCj/a88f1c41b59d.png) on `next/image`, hostname "i.ibb.co" is not configured under images in your `next.config.js`
+See more info: https://nextjs.org/docs/messages/next-image-unconfigured-host
+    at defaultLoader (http://localhost:3000/_next/static/chunks/node_modules_next_513598cc._.js:4509:49)
+    at http://localhost:3000/_next/static/chunks/node_modules_next_513598cc._.js:1938:36
+    at Array.map (<anonymous>)
+    at generateImgAttrs (http://localhost:3000/_next/static/chunks/node_modules_next_513598cc._.js:1938:24)
+    at getImgProps (http://localhost:3000/_next/static/chunks/node_modules_next_513598cc._.js:2323:27)
+    at http://localhost:3000/_next/static/chunks/node_modules_next_513598cc._.js:4886:82
+    at http://localhost:3000/_next/static/chunks/src_02fddd31._.js:1311:271
+    at Array.map (<anonymous>)
+    at ChatPage (http://localhost:3000/_next/static/chunks/src_02fddd31._.js:1275:38)
+    at ClientPageRoot (http://localhost:3000/_next/static/chunks/node_modules_7a87bcce._.js:2758:50)
