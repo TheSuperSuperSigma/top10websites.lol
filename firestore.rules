@@ -1,9 +1,51 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Helper function to check if user is authenticated
     function isAuthenticated() {
       return request.auth != null;
+    }
+
+    function isMemberOfServer(serverId) {
+      return isAuthenticated() && 
+        exists(/databases/$(database)/documents/servers/$(serverId)/members/$(request.auth.uid));
+    }
+
+    function isServerAdmin(serverId) {
+      return isAuthenticated() && 
+        get(/databases/$(database)/documents/servers/$(serverId)/members/$(request.auth.uid)).data.role == "admin";
+    }
+
+    // Server rules
+    match /servers/{serverId} {
+      allow create: if isAuthenticated();
+      allow read: if isAuthenticated() && 
+        exists(/databases/$(database)/documents/servers/$(serverId)/members/$(request.auth.uid));
+      
+      // Server members subcollection
+      match /members/{userId} {
+        allow read: if isMemberOfServer(serverId);
+        allow write: if isServerAdmin(serverId);
+      }
+
+      // Server channels
+      match /channels/{channelId} {
+        allow read: if isMemberOfServer(serverId);
+        allow write: if isServerAdmin(serverId);
+
+        // Channel messages
+        match /messages/{messageId} {
+          allow read: if isMemberOfServer(serverId);
+          allow create: if isMemberOfServer(serverId);
+          allow update, delete: if request.auth.uid == resource.data.userId;
+        }
+      }
+    }
+
+    // Server invites
+    match /serverInvites/{inviteId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && 
+        isServerAdmin(request.resource.data.serverId);
     }
 
     // Basic user profile access
@@ -14,6 +56,12 @@ service cloud.firestore {
       match /friends/{friendId} {
         allow read, write: if isAuthenticated() && 
           (request.auth.uid == userId || request.auth.uid == friendId);
+      }
+
+      // Add profile images subcollection
+      match /images/{imageId} {
+        allow read: if isAuthenticated();
+        allow write: if isAuthenticated() && request.auth.uid == userId;
       }
     }
     
@@ -33,12 +81,14 @@ service cloud.firestore {
 
     // Messages collection
     match /messages/{messageId} {
-      allow read, write: if isAuthenticated();
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if isAuthenticated() && 
+        request.auth.uid == resource.data.userId;
     }
 
     // Direct Messages
     match /directMessages/{messageId} {
-      // Allow reading messages where the user is either the sender or receiver
       allow read: if isAuthenticated() && (
         resource.data.fromUserId == request.auth.uid ||
         resource.data.toUserId == request.auth.uid ||
@@ -46,21 +96,21 @@ service cloud.firestore {
         resource.data.chatId.matches('.*' + request.auth.uid)
       );
       
-      // Allow creating messages only if the user is the sender
       allow create: if isAuthenticated() && 
         request.resource.data.fromUserId == request.auth.uid &&
         request.resource.data.chatId.matches('.*' + request.auth.uid + '.*');
         
-      // Optional: Allow deleting messages if you're the sender
       allow delete: if isAuthenticated() &&
         resource.data.fromUserId == request.auth.uid;
     }
+
+    // Chat Images (for message attachments)
+    match /chatImages/{imageId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow delete: if isAuthenticated() && 
+        request.auth.uid == resource.data.userId;
+    }
   }
 }
-
-
-
-
-
-
 

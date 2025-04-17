@@ -1,15 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { User } from "firebase/auth";
 import { googleSignIn, googleSignOut, listenForAuthChanges } from "@/lib/authService";
-import { sendMessage, listenForMessages } from "@/lib/chatService";
-import { getUserData } from "./friendService";
+import { sendMessage, listenForMessages, loadMoreMessages } from "@/lib/chatService";
+import { uploadImage } from "@/lib/storageService";
 import FriendSidebar from "./FriendSidebar";
 
 interface Message {
   id: string;
   text: string;
+  imageUrl?: string;
   username: string;
   timestamp?: Date;
   userId: string;
@@ -21,19 +22,53 @@ export default function ChatPage() {
   const [showSettings, setShowSettings] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const [username, setUsername] = useState("");
+  const [lastDoc, setLastDoc] = useState<any>(null);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [allMessagesLoaded, setAllMessagesLoaded] = useState(false);
+  const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+
+  // Function to handle scroll and load more messages
+  useEffect(() => {
+    const handleScroll = async () => {
+      if (!messagesContainerRef.current || isLoadingMore || allMessagesLoaded) return;
+
+      const { scrollTop } = messagesContainerRef.current;
+      
+      if (scrollTop === 0) {
+        setIsLoadingMore(true);
+        const moreMessages = await loadMoreMessages(lastDoc, 250); // Set limit to 250 messages
+        
+        if (moreMessages.length === 0) {
+          setAllMessagesLoaded(true);
+        } else {
+          setShouldScrollToBottom(false);
+          setMessages((prev: Message[]) => [...(moreMessages as Message[]), ...prev]);
+          setLastDoc(moreMessages[0]);
+        }
+        setIsLoadingMore(false);
+      }
+    };
+
+    const container = messagesContainerRef.current;
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+      return () => container.removeEventListener('scroll', handleScroll);
+    }
+  }, [lastDoc, isLoadingMore, allMessagesLoaded]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
     const unsubscribeAuth = listenForAuthChanges((authUser: User | null) => {
       setUser(authUser);
-      if (authUser) {
-        // Fetch username when user logs in
-        getUserData(authUser.uid).then((userData) => {
-          if (userData?.username) {
-            setUsername(userData.username);
-          }
-        });
-      }
+      // Remove the getUserData call since we don't need it anymore
     });
 
     return () => {
@@ -44,20 +79,53 @@ export default function ChatPage() {
   useEffect(() => {
     if (!user) return;
 
-    const unsubscribe = listenForMessages((msgs: Message[]) => {
+    const unsubscribe = listenForMessages((msgs: Message[], firstDoc: any) => {
       setMessages(msgs);
-    });
+      setLastDoc(firstDoc);
+      setShouldScrollToBottom(true);
+    }, 250); // Set limit to 250 messages
 
     return () => unsubscribe();
   }, [user]);
 
+  useEffect(() => {
+    if (shouldScrollToBottom) {
+      scrollToBottom();
+    }
+  }, [messages, shouldScrollToBottom]);
+
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      if (file.size > 32 * 1024 * 1024) {
+        alert('Image size must be less than 32MB');
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
+        return;
+      }
+      setSelectedImage(file);
+    }
+  };
+
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newMessage.trim() || !user) return;
+    if ((!newMessage.trim() && !selectedImage) || !user) return;
 
     try {
-      await sendMessage(user.displayName || 'Anonymous', newMessage.trim());
+      setShouldScrollToBottom(true);
+      let imageUrl = null;
+      
+      if (selectedImage) {
+        imageUrl = await uploadImage(selectedImage);
+      }
+      
+      await sendMessage({ text: newMessage.trim(), imageUrl });
       setNewMessage("");
+      setSelectedImage(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     } catch (error) {
       console.error("Error sending message:", error);
     }
@@ -96,12 +164,12 @@ export default function ChatPage() {
             ⚙️
           </button>
           
-          {/* Settings dropdown */}
+          {/* Simplified settings dropdown */}
           {showSettings && (
             <div className="absolute bottom-16 left-0 bg-gray-800 rounded-lg shadow-lg p-4 w-64">
               <div className="mb-4 border-b border-gray-700 pb-2">
                 <p className="text-sm text-gray-400">Logged in as</p>
-                <p className="text-sm truncate">{username}</p>
+                <p className="text-sm truncate">{user?.email}</p>
               </div>
               <button
                 onClick={() => googleSignOut()}
@@ -122,13 +190,28 @@ export default function ChatPage() {
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col h-screen bg-[#36393f]">
         {/* Messages Container */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          {messages.map((message) => (
+        <div 
+          ref={messagesContainerRef}
+          className="flex-1 overflow-y-auto p-4 space-y-4"
+        >
+          {isLoadingMore && (
+            <div className="text-center py-2">
+              <span className="text-gray-400">Loading more messages...</span>
+            </div>
+          )}
+          
+          {allMessagesLoaded && (
+            <div className="text-center py-2">
+              <span className="text-gray-400">No more messages to load</span>
+            </div>
+          )}
+
+          {messages.map((message, index) => (
             <div
-              key={message.id}
+              key={`${message.id}-${Date.now()}-${index}`}
               className={`flex flex-col ${
-                message.userId === user.uid ? 'items-end' : 'items-start'
-              }`}
+                message.userId === user?.uid ? 'items-end' : 'items-start'
+              } w-full`}
             >
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-sm text-gray-400">{message.username}</span>
@@ -137,16 +220,26 @@ export default function ChatPage() {
                 </span>
               </div>
               <div
-                className={`px-4 py-2 rounded-lg max-w-[80%] ${
-                  message.userId === user.uid
+                className={`px-4 py-2 rounded-lg max-w-[80%] break-all whitespace-pre-wrap overflow-hidden ${
+                  message.userId === user?.uid
                     ? 'bg-blue-600'
                     : 'bg-gray-700'
                 }`}
+                style={{ overflowWrap: 'anywhere', wordBreak: 'break-word' }}
               >
                 {message.text}
+                {message.imageUrl && (
+                  <img 
+                    src={message.imageUrl} 
+                    alt="Shared image" 
+                    className="max-w-full mt-2 rounded-lg"
+                    style={{ maxHeight: '300px' }}
+                  />
+                )}
               </div>
             </div>
           ))}
+          <div ref={messagesEndRef} />
         </div>
 
         {/* Message Input */}
@@ -159,6 +252,21 @@ export default function ChatPage() {
               placeholder="Send a message..."
               className="flex-1 px-4 py-2 bg-[#40444b] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageSelect}
+              ref={fileInputRef}
+              className="hidden"
+              id="image-upload"
+            />
+            <button
+              type="button"
+              onClick={() => document.getElementById('image-upload')?.click()}
+              className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg"
+            >
+              📷
+            </button>
             <button
               type="submit"
               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
@@ -166,6 +274,25 @@ export default function ChatPage() {
               Send
             </button>
           </div>
+          {selectedImage && (
+            <div className="mt-2 flex items-center gap-2">
+              <span className="text-sm text-gray-400">
+                Selected: {selectedImage.name}
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedImage(null);
+                  if (fileInputRef.current) {
+                    fileInputRef.current.value = '';
+                  }
+                }}
+                className="text-red-500 hover:text-red-400"
+              >
+                ✕
+              </button>
+            </div>
+          )}
         </form>
       </div>
     </div>

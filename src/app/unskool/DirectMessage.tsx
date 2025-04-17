@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { sendDirectMessage, listenForDirectMessages } from "@/lib/dmService";
 import { getUserData } from "./friendService";
 
@@ -22,12 +22,22 @@ export default function DirectMessage({ otherUserId, currentUserId, onClose }: P
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [otherUsername, setOtherUsername] = useState("");
+  
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   useEffect(() => {
     // Get other user's data
     getUserData(otherUserId).then((userData) => {
-      if (userData?.username) {
-        setOtherUsername(userData.username);
+      if (userData?.displayName) {
+        setOtherUsername(userData.displayName);
       }
     });
 
@@ -40,6 +50,7 @@ export default function DirectMessage({ otherUserId, currentUserId, onClose }: P
     if (input.trim()) {
       await sendDirectMessage(otherUserId, input);
       setInput("");
+      scrollToBottom();
     }
   };
 
@@ -56,15 +67,17 @@ export default function DirectMessage({ otherUserId, currentUserId, onClose }: P
         {messages.map((msg) => (
           <div
             key={msg.id}
-            className={`p-2 rounded ${
+            className={`p-2 rounded break-all whitespace-pre-wrap overflow-hidden ${
               msg.fromUserId === currentUserId
                 ? "bg-blue-600 ml-auto"
                 : "bg-gray-700"
             } max-w-[80%]`}
+            style={{ overflowWrap: 'anywhere', wordBreak: 'break-word' }}
           >
             {msg.text}
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
 
       <div className="p-4 border-t border-gray-700">
@@ -88,3 +101,6 @@ export default function DirectMessage({ otherUserId, currentUserId, onClose }: P
     </div>
   );
 }
+
+
+

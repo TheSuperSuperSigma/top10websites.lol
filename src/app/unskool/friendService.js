@@ -18,7 +18,11 @@ export const getUserData = async (uid) => {
   try {
     const userDoc = await getDoc(doc(db, "users", uid));
     if (userDoc.exists()) {
-      return userDoc.data();
+      const data = userDoc.data();
+      return {
+        ...data,
+        displayName: data.displayName || data.email || 'Unknown'  // Fallback to email if no display name
+      };
     }
     return null;
   } catch (error) {
@@ -27,11 +31,11 @@ export const getUserData = async (uid) => {
   }
 };
 
-// Send a friend request using username
-export const sendFriendRequest = async (fromUID, toUsername) => {
+// Send a friend request using email instead of username
+export const sendFriendRequest = async (fromUID, toEmail) => {
   try {
-    // Find user by username
-    const usersQuery = query(collection(db, "users"), where("username", "==", toUsername));
+    // Find user by email
+    const usersQuery = query(collection(db, "users"), where("email", "==", toEmail));
     const usersSnapshot = await getDocs(usersQuery);
 
     if (usersSnapshot.empty) {

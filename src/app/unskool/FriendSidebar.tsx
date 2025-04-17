@@ -39,23 +39,10 @@ interface CustomError {
 export default function FriendSidebar({ user }: Props) {
   const [friendRequests, setFriendRequests] = useState<FriendRequestData[]>([]);
   const [friends, setFriends] = useState<Friend[]>([]);
-  const [usernameToAdd, setUsernameToAdd] = useState("");
+  const [emailToAdd, setEmailToAdd] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentUsername, setCurrentUsername] = useState<string>("");
-  const [newUsername, setNewUsername] = useState("");
-  const [showUsernameChange, setShowUsernameChange] = useState(false);
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (user?.uid) {
-      getUserData(user.uid).then((userData) => {
-        if (userData?.username) {
-          setCurrentUsername(userData.username);
-        }
-      });
-    }
-  }, [user?.uid]);
 
   useEffect(() => {
     if (!user?.uid) {
@@ -70,7 +57,7 @@ export default function FriendSidebar({ user }: Props) {
             const userData = await getUserData(request.from);
             return {
               ...request,
-              fromUsername: userData?.username || 'Unknown'
+              fromUsername: userData?.displayName || 'Unknown'
             };
           } catch (err) {
             console.error("Error enriching request:", err);
@@ -103,7 +90,7 @@ export default function FriendSidebar({ user }: Props) {
             const userData = await getUserData(id);
             return {
               id,
-              username: userData?.username || 'Unknown'
+              username: userData?.displayName || 'Unknown'
             };
           } catch (err) {
             console.error("Error enriching friend:", err);
@@ -127,21 +114,6 @@ export default function FriendSidebar({ user }: Props) {
     };
   }, [user?.uid]);
 
-  const handleUpdateUsername = async () => {
-    if (!user?.uid || !newUsername.trim()) return;
-    
-    try {
-      await updateUsername(user.uid, newUsername.trim());
-      setCurrentUsername(newUsername.trim());
-      setNewUsername("");
-      setShowUsernameChange(false);
-      setError(null);
-    } catch (error) {
-      const customError = error as CustomError;
-      setError(customError.message || "Failed to update username");
-    }
-  };
-
   const handleSendRequest = async () => {
     if (!user?.uid) {
       setError("You must be logged in to send friend requests");
@@ -150,11 +122,11 @@ export default function FriendSidebar({ user }: Props) {
 
     try {
       setError(null);
-      if (!usernameToAdd.trim()) {
-        throw new Error("Please enter a username");
+      if (!emailToAdd.trim()) {
+        throw new Error("Please enter an email address");
       }
-      await sendFriendRequest(user.uid, usernameToAdd);
-      setUsernameToAdd("");
+      await sendFriendRequest(user.uid, emailToAdd);
+      setEmailToAdd("");
       alert("Friend request sent!");
     } catch (error) {
       const customError = error as CustomError;
@@ -199,35 +171,6 @@ export default function FriendSidebar({ user }: Props) {
       <div className="w-64 bg-gray-800 text-white p-4">
         <h2 className="text-lg font-bold mb-4">Friends</h2>
 
-        {/* Username display and change section */}
-        <div className="mb-4 p-2 bg-gray-700 rounded">
-          <p className="text-sm">Your username: {currentUsername}</p>
-          <button
-            onClick={() => setShowUsernameChange(!showUsernameChange)}
-            className="text-xs text-blue-400 mt-1"
-          >
-            Change username
-          </button>
-          
-          {showUsernameChange && (
-            <div className="mt-2">
-              <input
-                type="text"
-                value={newUsername}
-                onChange={(e) => setNewUsername(e.target.value)}
-                placeholder="New username"
-                className="w-full p-2 mb-2 rounded bg-gray-600 border border-gray-500"
-              />
-              <button
-                onClick={handleUpdateUsername}
-                className="w-full bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-sm"
-              >
-                Update Username
-              </button>
-            </div>
-          )}
-        </div>
-
         {error && (
           <div className="mb-4 p-2 bg-red-500 text-white rounded">
             {error}
@@ -236,10 +179,10 @@ export default function FriendSidebar({ user }: Props) {
 
         <div className="mb-4">
           <input
-            type="text"
-            value={usernameToAdd}
-            onChange={(e) => setUsernameToAdd(e.target.value)}
-            placeholder="Friend's username"
+            type="email"
+            value={emailToAdd}
+            onChange={(e) => setEmailToAdd(e.target.value)}
+            placeholder="Friend's email address"
             className="w-full p-2 mb-2 rounded bg-gray-700 border border-gray-600"
           />
           <button

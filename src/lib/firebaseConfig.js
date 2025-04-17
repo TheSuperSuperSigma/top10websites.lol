@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { getAnalytics } from "firebase/analytics";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDb_saLnE7wkEX0YWH3WDUZOtoQzByuBes",
@@ -13,18 +13,8 @@ const firebaseConfig = {
   measurementId: "G-Q8EFH8EG7P"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Initialize services
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
-const db = getFirestore(app);
-let analytics;
-
-// Only initialize analytics on the client side
-if (typeof window !== 'undefined') {
-  analytics = getAnalytics(app);
-}
-
-export { auth, provider, db, analytics };
+export const auth = getAuth(app);
+export const provider = new GoogleAuthProvider();
+export const db = getFirestore(app);
+export const storage = getStorage(app);
