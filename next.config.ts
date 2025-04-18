@@ -20,15 +20,6 @@ const nextConfig: NextConfig = {
         ],
       },
     ]
-  },
-  async redirects() {
-    return [
-      {
-        source: '/crazycattle3d',
-        destination: 'https://crazycattle3d.top10websites.lol',
-        permanent: true,
-      },
-    ]
   }
 };
 

@@ -52,8 +52,8 @@ export default function Home() {
             <Link href="https://top10websites.my.canva.site/top-10-athiei-lookalikes" className="hover:underline">
               Top 10 Athiei Lookalikes
             </Link>
-            <Link href="https://example.com" className="hover:underline">
-              Insert Website
+            <Link href="https://top10websites.lol/crazycattle3d" className="hover:underline">
+              CrazyCattle3D
             </Link>
             <Link href="https://example.com" className="hover:underline">
               Insert Website
