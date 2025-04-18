@@ -227,7 +227,14 @@ export default function ChatPage() {
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-sm text-gray-400">{message.username}</span>
                 <span className="text-xs text-gray-500">
-                  {message.timestamp?.toLocaleTimeString()}
+                  {message.timestamp?.toLocaleString('en-US', {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true,
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                  })}
                 </span>
               </div>
               <div
