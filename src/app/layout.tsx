@@ -1,6 +1,6 @@
 import { Analytics } from '@vercel/analytics/next';
 import { Geist, Geist_Mono } from "next/font/google";
-import Script from "next/script";
+// Remove the Script import since it's not being used
 import ThemeToggle from "../components/ThemeToggle";
 import ThemeProvider from "../components/ThemeProvider";
 import "./globals.css";
