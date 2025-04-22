@@ -2,22 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+:root,
+[data-theme='light'] {
   --background: #ffffff;
   --foreground: #171717;
+  --accent: #FFD700;
+  transition: --background 0.3s ease, --foreground 0.3s ease, --accent 0.3s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+[data-theme='dark'] {
+  --background: #000000;
+  --foreground: #FFD700;
+  --accent: #DAA520;
+  transition: --background 0.3s ease, --foreground 0.3s ease, --accent 0.3s ease;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Theme toggle button styles */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 8px;
+  border-radius: 50%;
+  background: var(--background);
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  cursor: pointer;
+  z-index: 10000;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
 }
 
 /* Center the title at the top */

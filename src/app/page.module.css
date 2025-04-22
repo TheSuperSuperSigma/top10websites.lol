@@ -1,0 +1,110 @@
+@font-face {
+  font-family: 'Alphacorsa';
+  src: url('/fonts/alphacorsa.ttf') format('truetype');
+}
+
+.container {
+  background: var(--background);
+  min-height: 100vh;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  transition: background-color 0.3s ease;
+}
+
+.title {
+  font-family: 'Alphacorsa', sans-serif;
+  font-size: 3rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, #FFD700, #DAA520);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: fadeInDown 0.8s ease-out;
+  width: 100%;
+}
+
+.mainContent {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.linkColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.imageContainer {
+  position: relative;
+  width: 200px;
+  height: 350px;
+  margin: 0 1rem;
+}
+
+.link {
+  background: var(--background);
+  padding: 0.75rem;
+  border-radius: 15px;
+  text-align: center;
+  border: 1px solid var(--accent);
+  transition: all 0.3s ease, background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  color: var(--foreground);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  backdrop-filter: blur(10px);
+}
+
+.link:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(255, 215, 0, 0.2);
+  border-color: var(--accent);
+}
+
+.unskoolLink {
+  width: 30%;
+  margin: 1rem auto 0;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1024px) {
+  .mainContent {
+    flex-direction: column;
+  }
+
+  .imageContainer {
+    width: 150px;
+    height: 300px;
+    margin: 0.5rem auto;
+  }
+
+  .unskoolLink {
+    width: 100%;
+  }
+}
+
+
+
+
+
+

@@ -1,0 +1,232 @@
+.mainContainer {
+  background: var(--background);
+  color: var(--foreground);
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.header {
+  padding: 3rem 0;
+  text-align: center;
+  background: var(--background);
+  position: relative;
+  z-index: 10;
+  border-bottom: 2px solid rgba(255, 215, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.mainTitle {
+  font-size: 4rem;
+  font-weight: 800;
+  background: linear-gradient(45deg, #FFD700, #DAA520);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+  animation: shimmer 2s infinite;
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+}
+
+.subtitle {
+  font-size: 1.8rem;
+  color: #DAA520;
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out forwards 0.5s;
+}
+
+.headerImage {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #FFD700;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+  animation: float 6s ease-in-out infinite;
+}
+
+.profileImage {
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.profileImage:hover {
+  transform: scale(1.05);
+}
+
+.scrollContainer {
+  padding: 2rem 0;
+}
+
+.scrollItem {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 2rem;
+  position: relative;
+  background: var(--background);
+  gap: 2rem;
+  overflow: visible;
+  z-index: 1;
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateY(50px);
+  animation: slideUp 0.8s ease-out forwards;
+  transition: background-color 0.3s ease;
+}
+
+.caption {
+  padding: 2rem 4rem;
+  background: var(--background);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  text-align: center;
+  transform: translateY(0);
+  transition: all 0.4s ease, background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  border: 2px solid var(--accent);
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+}
+
+.caption:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(255, 215, 0, 0.2);
+  border-color: var(--accent);
+}
+
+.number {
+  font-size: 4rem;
+  font-weight: 800;
+  background: linear-gradient(45deg, #FFD700, #DAA520);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.name {
+  font-size: 2.5rem;
+  color: var(--foreground);
+  font-weight: 600;
+  letter-spacing: 1px;
+  opacity: 0;
+  animation: fadeIn 0.5s ease-out forwards 0.3s;
+}
+
+.imageWrapper {
+  width: 80%;
+  max-width: 800px;
+  border-radius: 25px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s ease;
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out forwards 0.5s;
+}
+
+.imageWrapper:hover {
+  transform: scale(1.02);
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.2);
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -100% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes slideUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(255, 215, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+  }
+}
+
+@media (max-width: 768px) {
+  .mainTitle {
+    font-size: 2.5rem;
+  }
+  
+  .subtitle {
+    font-size: 1.3rem;
+  }
+  
+  .headerImage {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .imageWrapper {
+    width: 95%;
+  }
+  
+  .caption {
+    padding: 1.5rem 2rem;
+  }
+  
+  .number {
+    font-size: 3rem;
+  }
+  
+  .name {
+    font-size: 1.8rem;
+  }
+}
+
+.scrollItem:nth-child(odd) {
+  animation-delay: 0.2s;
+}
+
+.scrollItem:nth-child(even) {
+  animation-delay: 0.4s;
+}

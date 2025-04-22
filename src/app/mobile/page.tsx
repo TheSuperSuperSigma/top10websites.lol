@@ -1,63 +1,48 @@
-"use client";
-
-import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
+import styles from "./page.module.css";
 
 export default function MobilePage() {
   return (
-    <>
-      <Head>
-        <title>Top 10 Websites - Mobile</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <div className={styles.container}>
+      <h1 className={styles.title}>
+        Top 10 <br /> Websites
+      </h1>
 
-      <div className="flex flex-col items-center justify-center min-h-screen bg-white px-6 py-10">
-        {/* Title */}
-        <h1 className="text-[32px] font-bold text-black text-center mb-6">
-          Top 10 Websites
-        </h1>
-
-        {/* Links (Stacked for Mobile) */}
-        <div className="flex flex-col space-y-6 text-[24px] font-bold text-black text-center">
-          <Link href="https://top10websites.my.canva.site/top-10-big-black-people" className="hover:underline">
-            Top 10 Big Black People
-          </Link>
-          <Link href="https://top10websites.my.canva.site/top-10-athiei-lookalikes" className="hover:underline">
-            Top 10 Athiei Lookalikes
-          </Link>
-          <Link href="https://top10websites.lol/crazycattle3d" className="hover:underline">
-            CrazyCattle3D
-          </Link>
-          <Link href="https://example.com" className="hover:underline">
-            Insert Website
-          </Link>
-          <Link href="https://example.com" className="hover:underline">
-            Insert Website
-          </Link>
-            <Link href="https://example.com" className="hover:underline">
-            Insert Website
-          </Link>
-          <Link href="https://example.com" className="hover:underline">
-            Insert Website
-          </Link>
-          <Link href="https://example.com" className="hover:underline">
-            Insert Website
-          </Link>
-           <Link href="https://example.com" className="hover:underline">
-            Insert Website
-          </Link>
-          <Link href="https://example.com" className="hover:underline">
-            Insert Website
-          </Link>
-        </div>
-
-        {/* Uppy */}
-        <div className="mt-10">
-          <Link href="https://top10websites.lol/unskool" className="text-[24px] font-bold text-black hover:underline">
-            unskool
-          </Link>
-        </div>
+      <div className={styles.imageContainer}>
+        <Image
+          src="/yunomiles.png"
+          alt="Yuno Miles"
+          fill
+          className="object-cover"
+          priority
+        />
       </div>
-    </>
+
+      <div className={styles.linksContainer}>
+        <Link href="/top10bigblackpeople" className={styles.link}>
+          Top 10 Big Black People
+        </Link>
+        <Link href="/top10athieilookalikes" className={styles.link}>
+          Top 10 Athiei Lookalikes
+        </Link>
+        <Link href="https://example.com" className={styles.link}>
+          Comming Soon
+        </Link>
+        <Link href="https://example.com" className={styles.link}>
+          Coming Soon
+        </Link>
+        <Link href="https://example.com" className={styles.link}>
+          Coming Soon
+        </Link>
+        <Link href="https://example.com" className={styles.link}>
+          Coming Soon
+        </Link>
+      </div>
+
+      <Link href="https://top10websites.lol/unskool" className={`${styles.link} ${styles.unskoolLink}`}>
+        Unskool
+      </Link>
+    </div>
   );
 }
