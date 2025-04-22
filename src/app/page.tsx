@@ -76,7 +76,7 @@ export default function Home() {
         </div>
       </div>
 
-      <Link href="https://unskool.software" className={`${styles.link} ${styles.unskoolLink}`}>
+      <Link href="/unskool" className={`${styles.link} ${styles.unskoolLink}`}>
         Unskool
       </Link>
     </div>

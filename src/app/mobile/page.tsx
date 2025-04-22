@@ -40,7 +40,7 @@ export default function MobilePage() {
         </Link>
       </div>
 
-      <Link href="https://top10websites.lol/unskool" className={`${styles.link} ${styles.unskoolLink}`}>
+      <Link href="/unskool" className={`${styles.link} ${styles.unskoolLink}`}>
         Unskool
       </Link>
     </div>
