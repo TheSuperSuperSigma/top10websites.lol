@@ -1,79 +1,15 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import styles from './styles.module.css';
 import IndyMowerNavbar from '@/components/IndyMowerNavbar';
 import Link from 'next/link';
 
 export default function IndyMower() {
-  const [activeTab, setActiveTab] = useState('services');
   const containerRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number>(0);
   const progressRef = useRef<number>(0);
-
-  const renderTabContent = () => {
-    switch (activeTab) {
-      case 'services':
-        return (
-          <div className={styles.tabContent}>
-            <h2>Our Services</h2>
-            <div className={styles.servicesPreview}>
-              <div className={styles.serviceItem}>
-                <span>🌿</span>
-                <h3>Standard Mowing</h3>
-                <p>Professional cut with complete cleanup</p>
-                <span className={styles.price}>From $35</span>
-              </div>
-              <div className={styles.serviceItem}>
-                <span>✂️</span>
-                <h3>Edge Trimming</h3>
-                <p>Clean edges along walkways and beds</p>
-                <span className={styles.price}>From $10</span>
-              </div>
-              <div className={styles.serviceItem}>
-                <span>🌱</span>
-                <h3>Weed Removal</h3>
-                <p>Thorough weed control service</p>
-                <span className={styles.price}>From $10</span>
-              </div>
-            </div>
-            <Link href="/indymower/services" className={styles.viewMoreButton}>
-              View All Services
-            </Link>
-          </div>
-        );
-      case 'contact':
-        return (
-          <div className={styles.tabContent}>
-            <h2>Contact Us</h2>
-            <div className={styles.contactPreview}>
-              <div className={styles.contactItem}>
-                <span>📧</span>
-                <h3>Email</h3>
-                <a href="mailto:theindymower@gmail.com">theindymower@gmail.com</a>
-              </div>
-              <div className={styles.contactItem}>
-                <span>📍</span>
-                <h3>Location</h3>
-                <p>Indianapolis, Indiana</p>
-              </div>
-              <div className={styles.contactItem}>
-                <span>⏰</span>
-                <h3>Hours</h3>
-                <p>Mon-Fri: 7AM-7PM</p>
-                <p>Sat: 8AM-5PM</p>
-              </div>
-            </div>
-            <Link href="/indymower/contact" className={styles.viewMoreButton}>
-              Contact Details
-            </Link>
-          </div>
-        );
-      default:
-        return null;
-    }
-  };
 
   useEffect(() => {
     let startTime: number | null = null;
@@ -194,6 +130,9 @@ export default function IndyMower() {
     </main>
   );
 }
+
+
+
 
 
 
