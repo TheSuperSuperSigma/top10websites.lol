@@ -9,23 +9,20 @@ const nextConfig: NextConfig = {
       }
     ]
   },
-  async headers() {
+  async rewrites() {
     return [
       {
-        source: '/game/:path*',
-        headers: [
+        source: '/',
+        destination: '/indymower',
+        has: [
           {
-            key: 'Cross-Origin-Embedder-Policy',
-            value: 'require-corp',
+            type: 'host',
+            value: 'indymower.top10websites.lol',
           },
-          {
-            key: 'Cross-Origin-Opener-Policy',
-            value: 'same-origin',
-          }
         ],
       },
-    ]
-  }
+    ];
+  },
 };
 
 export default nextConfig;

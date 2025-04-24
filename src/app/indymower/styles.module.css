@@ -1,0 +1,274 @@
+@font-face {
+  font-family: 'AmericanCaptain';  src: url('/fonts/AmericanCaptain.otf') format('opentype');
+}
+.container {
+  padding-top: 70px;
+  min-height: 150vh; /* Increased to allow more scrolling space */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: url('/cutgrass.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* This makes the background stay fixed while scrolling */
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Optional: Add this if you want to darken the background a bit for better readability */
+.container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Make sure the content stays above the overlay */
+.container > * {
+  position: relative;
+  z-index: 1;
+}
+.container h1 {
+  font-family: 'AmericanCaptain', sans-serif;
+  color: #1B5E20;  /* Reverted to previous green */
+  margin: 2rem 0;
+  font-size: 4rem;
+  letter-spacing: 2px;
+}
+.lawnmowerSection {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #f0f0f0;
+  margin: 0.5rem 0; /* Reduced from 1rem to 0.5rem */
+  border: 2px solid #1B5E20;
+  margin-top: 80vh;
+  overflow: visible;
+}
+.lawnmowerContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  transform: translateX(-100%);
+  will-change: transform;
+  overflow: visible;
+}
+.imageWrapper {
+  position: relative;
+  width: 800px;
+  height: 500px;
+  margin-left: -18%; /* Keeping original position */
+  z-index: 3;
+  transform: translateX(0);
+  flex-shrink: 0;
+}
+.lawnmowerImage {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  z-index: 3 !important;
+  opacity: 1 !important;
+  display: block !important;
+  pointer-events: none;
+  transform: translateX(100%);
+}
+.diagonalMask {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 130%;
+  background-color: #1B5E20;
+  z-index: 1;
+  opacity: 1;
+  margin-right: -1px; /* Add this line to prevent the gap */
+}
+.rightTriangle {
+  position: absolute;
+  left: 130%;
+  top: 0;
+  width: 100px;
+  height: 100%;
+  background-color: #1B5E20;
+  clip-path: polygon(
+    -1px 0, /* Slightly overlap */
+    100% 50%,
+    -1px 100%
+  );
+  z-index: 1;
+  margin-left: -1px; /* Add this line to prevent the gap */
+}
+@media (max-width: 768px) {
+  .container h1 {
+    font-size: 2.5rem;
+  }
+  .lawnmowerImage {
+    height: 200px;
+  }
+}
+
+.contentBox {
+  background-color: rgba(255, 255, 255, 0.95);
+  width: 80%;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.contentBox h2 {
+  color: #1B5E20;
+  font-size: 2.2rem;
+  margin-bottom: 2rem;
+  font-weight: bold;
+  font-family: 'AmericanCaptain', sans-serif;
+  letter-spacing: 1px;
+}
+
+.welcomeContent {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.welcomeSection {
+  text-align: left;
+  padding: 1rem;
+}
+
+.welcomeSection h3 {
+  color: #1B5E20;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.welcomeSection p {
+  color: #333;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.welcomeButton {
+  display: inline-block;
+  background-color: #1B5E20;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.welcomeButton:hover {
+  background-color: #154c19;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .welcomeContent {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .contentBox {
+    width: 90%;
+    padding: 1.5rem;
+  }
+
+  .contentBox h2 {
+    font-size: 1.8rem;
+  }
+
+  .welcomeSection {
+    text-align: center;
+  }
+}
+
+.contentBox p {
+  color: #333;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.lawnmowerText {
+  position: relative;
+  color: black;
+  z-index: 4;
+  max-width: 40%;
+  text-align: left;
+  margin-left: 50%; /* Increased margin to push text more to the right */
+  flex-shrink: 0;
+}
+
+.lawnmowerText h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.lawnmowerText p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+.verticalBookButton {
+  position: relative;
+  background-color: #1B5E20;
+  color: white;
+  padding: 15px 30px; /* Increased horizontal padding */
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Added to center content vertically */
+  z-index: 4;
+  margin-left: 125px;
+  letter-spacing: 0.5em;
+  text-align: center;
+  line-height: 1.5; /* Adjusted line height */
+  width: 60px; /* Added fixed width */
+}
+
+.verticalBookButton br {
+  line-height: 1.5; /* Consistent spacing between letters */
+}
+
+.verticalBookButton:hover {
+  background-color: #154c19;
+}
+
+
+
+
+
+
+

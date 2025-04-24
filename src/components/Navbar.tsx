@@ -12,15 +12,10 @@ export default function Navbar() {
         </Link>
         
         <div className="space-x-4">
-          <Link 
-            href="/crazycattle3d" 
-            className="text-white hover:text-gray-300"
-          >
-            Play CrazyCattle3D
-          </Link>
-          {/* Add more navigation links here */}
+          {/* Add navigation links here */}
         </div>
       </div>
     </nav>
   );
 }
+

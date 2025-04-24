@@ -1,0 +1,107 @@
+.main {
+  min-height: 100vh;
+  background: url('/cutgrass.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  padding-top: 80px; /* Add space for navbar */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.container h1 {
+  color: #1B5E20;
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  text-align: center;
+  color: #2E7D32;
+  font-size: 1.2rem;
+  margin-bottom: 3rem;
+}
+
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.serviceCard {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.serviceCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(27, 94, 32, 0.2);
+}
+
+.serviceIcon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.serviceCard h3 {
+  color: #1B5E20;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.serviceCard p {
+  color: #555;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.price {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #1B5E20;
+  margin-bottom: 1.5rem;
+}
+
+.bookNowButton {
+  display: inline-block;
+  background: #1B5E20;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.bookNowButton:hover {
+  background: #2E7D32;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .servicesGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .container h1 {
+    font-size: 2rem;
+  }
+}
+
+
+
