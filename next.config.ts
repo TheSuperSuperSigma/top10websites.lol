@@ -23,6 +23,15 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: '/indymower',
+        destination: 'https://indymower.top10websites.lol',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
