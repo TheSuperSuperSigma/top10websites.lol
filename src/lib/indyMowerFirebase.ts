@@ -20,6 +20,7 @@ export const indyMowerDb = getFirestore(indyMowerApp);
 
 // Initialize Analytics only on client side
 if (typeof window !== 'undefined') {
-  const analytics = getAnalytics(indyMowerApp);
+  getAnalytics(indyMowerApp);
 }
+
 

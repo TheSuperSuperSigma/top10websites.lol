@@ -8,6 +8,15 @@ import {
   Timestamp 
 } from "firebase/firestore";
 
+interface BookingDetails {
+  customerInfo: {
+    date: string;
+    time: string;
+    [key: string]: any; // for other customer info fields
+  };
+  [key: string]: any; // for other booking fields
+}
+
 // Check if a time slot is available
 export async function checkTimeSlotAvailability(date: string, time: string) {
   try {
@@ -71,7 +80,7 @@ export async function getBookedTimes(date: string) {
 }
 
 // Create a new booking
-export async function createBooking(bookingDetails: any) {
+export async function createBooking(bookingDetails: BookingDetails) {
   try {
     const bookingsRef = collection(db, "bookings");
     const selectedDate = new Date(bookingDetails.customerInfo.date);
@@ -128,6 +137,7 @@ export async function testFirebaseConnection() {
     throw error;
   }
 }
+
 
 
 
