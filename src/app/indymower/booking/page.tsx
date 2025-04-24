@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import styles from './booking.module.css';
 import IndyMowerNavbar from '@/components/IndyMowerNavbar';
 import { useRouter } from 'next/navigation';
+import { getBookedTimes, createBooking, testFirebaseConnection } from '@/lib/bookingService';
 
 interface ServiceOption {
   id: string;
@@ -18,6 +19,8 @@ interface CustomerInfo {
   email: string;
   address: string;
   phone?: string;
+  date: string;
+  time: string;
 }
 
 export default function Booking() {
@@ -29,9 +32,25 @@ export default function Booking() {
   const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({
     email: '',
     address: '',
-    phone: ''
+    phone: '',
+    date: '',
+    time: ''
   });
   const [errors, setErrors] = useState<Partial<CustomerInfo>>({});
+  const [availableTimeSlots, setAvailableTimeSlots] = useState<string[]>([]);
+
+  const currentDate = new Date();
+  const twoWeeksFromNow = new Date(currentDate);
+  twoWeeksFromNow.setDate(currentDate.getDate() + 14);
+  const maxDate = twoWeeksFromNow.toISOString().split('T')[0];
+
+  // Helper function to format date as YYYY/MM/DD
+  const formatDate = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}/${month}/${day}`;
+  };
 
   const serviceCategories = {
     mowing: [
@@ -88,6 +107,39 @@ export default function Booking() {
     ]
   };
 
+  const isToday = (date: string) => {
+    const today = new Date();
+    const selectedDate = new Date(date);
+    return (
+      selectedDate.getDate() === today.getDate() &&
+      selectedDate.getMonth() === today.getMonth() &&
+      selectedDate.getFullYear() === today.getFullYear()
+    );
+  };
+
+  const getCurrentTime = () => {
+    const now = new Date();
+    const hours = now.getHours();
+    return `${hours > 12 ? hours - 12 : hours}:00 ${hours >= 12 ? 'PM' : 'AM'}`;
+  };
+
+  const getAvailableTimes = async (selectedDate: string) => {
+    const timeSlots = [
+      "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
+      "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM"
+    ];
+
+    try {
+      // Get already booked times for the selected date
+      const bookedTimes = await getBookedTimes(selectedDate);
+      // Filter out booked times
+      return timeSlots.filter(time => !bookedTimes.includes(time));
+    } catch (error) {
+      console.error("Error getting available times:", error);
+      return timeSlots; // Return all slots if there's an error
+    }
+  };
+
   useEffect(() => {
     setProgress(currentStep * 25);
   }, [currentStep]);
@@ -128,6 +180,27 @@ export default function Booking() {
       newErrors.address = 'Address is required';
     }
 
+    if (!customerInfo.date) {
+      newErrors.date = 'Date is required';
+    } else {
+      // Convert dates to YYYY-MM-DD format for comparison
+      const selectedDateStr = new Date(customerInfo.date).toISOString().split('T')[0];
+      const todayStr = new Date().toISOString().split('T')[0];
+      const twoWeeksFromNow = new Date();
+      twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
+      const twoWeeksStr = twoWeeksFromNow.toISOString().split('T')[0];
+
+      if (selectedDateStr <= todayStr) {
+        newErrors.date = 'Please book at least 1 day in advance';
+      } else if (selectedDateStr > twoWeeksStr) {
+        newErrors.date = 'Bookings can only be made up to 2 weeks in advance';
+      }
+    }
+
+    if (!customerInfo.time) {
+      newErrors.time = 'Time is required';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -145,7 +218,10 @@ export default function Booking() {
         timestamp: new Date().toISOString(),
       };
 
-      // Send the email using a server endpoint
+      // Create the booking in Firestore
+      await createBooking(bookingDetails);
+
+      // Send the email
       const response = await fetch('/api/send-booking', {
         method: 'POST',
         headers: {
@@ -159,9 +235,19 @@ export default function Booking() {
       }
 
       router.push('/indymower/booking/thank-you');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error submitting booking:', error);
-      alert('There was an error submitting your booking. Please try again.');
+      if (error.message === "This time slot is no longer available") {
+        alert('Sorry, this time slot has just been booked. Please select another time.');
+        // Refresh available times
+        if (customerInfo.date) {
+          const availableTimes = await getAvailableTimes(customerInfo.date);
+          setAvailableTimeSlots(availableTimes);
+          setCustomerInfo(prev => ({ ...prev, time: '' }));
+        }
+      } else {
+        alert('There was an error submitting your booking. Please try again.');
+      }
     }
   };
 
@@ -192,6 +278,28 @@ export default function Booking() {
   return (
     <main className={styles.main}>
       <IndyMowerNavbar />
+      <button 
+        onClick={async () => {
+          try {
+            const result = await testFirebaseConnection();
+            alert('Test successful! Check console for details.');
+          } catch (error) {
+            console.error('Test error:', error);
+            alert('Test failed! Check console for details.');
+          }
+        }}
+        style={{
+          padding: '10px 20px',
+          margin: '20px',
+          backgroundColor: '#ff4444',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer'
+        }}
+      >
+        Test Firebase Connection
+      </button>
       <div className={styles.container}>
         <h1>Design Your Perfect Lawn Service</h1>
         
@@ -285,6 +393,56 @@ export default function Booking() {
                 </div>
 
                 <div className={styles.formGroup}>
+                  <label htmlFor="date">Preferred Date *</label>
+                  <input
+                    type="date"
+                    id="date"
+                    value={customerInfo.date}
+                    onChange={async (e) => {
+                      const newDate = e.target.value;
+                      setCustomerInfo(prev => ({
+                        ...prev,
+                        date: newDate,
+                        time: '' // Reset time when date changes
+                      }));
+                      if (newDate) {
+                        const availableTimes = await getAvailableTimes(newDate);
+                        setAvailableTimeSlots(availableTimes);
+                      }
+                    }}
+                    className={errors.date ? styles.errorInput : ''}
+                    min={new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0]}
+                    max={maxDate}
+                  />
+                  <span className={styles.helperText}>
+                    Bookings available from {formatDate(new Date(new Date().setDate(new Date().getDate() + 1)))} to {formatDate(twoWeeksFromNow)} (2 weeks in advance)
+                  </span>
+                  {errors.date && <span className={styles.errorMessage}>{errors.date}</span>}
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label htmlFor="time">Preferred Time *</label>
+                  <select
+                    id="time"
+                    value={customerInfo.time}
+                    onChange={(e) => setCustomerInfo({...customerInfo, time: e.target.value})}
+                    className={errors.time ? styles.errorInput : ''}
+                    disabled={!customerInfo.date} // Disable if no date selected
+                  >
+                    <option value="">Select a time</option>
+                    {customerInfo.date && availableTimeSlots.map(time => (
+                      <option key={time} value={time}>
+                        {time}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.time && <span className={styles.errorMessage}>{errors.time}</span>}
+                  {!customerInfo.date && 
+                    <span className={styles.helperText}>Please select a date first</span>
+                  }
+                </div>
+
+                <div className={styles.formGroup}>
                   <label htmlFor="phone">Phone (Optional)</label>
                   <input
                     type="tel"
@@ -312,6 +470,8 @@ export default function Booking() {
                   <h3>Contact Information</h3>
                   <p>Email: {customerInfo.email}</p>
                   <p>Address: {customerInfo.address}</p>
+                  <p>Preferred Date: {new Date(customerInfo.date).toLocaleDateString()}</p>
+                  <p>Preferred Time: {customerInfo.time}</p>
                   {customerInfo.phone && <p>Phone: {customerInfo.phone}</p>}
                 </div>
                 <div className={styles.totalPrice}>
@@ -348,5 +508,12 @@ export default function Booking() {
     </main>
   );
 }
+
+
+
+
+
+
+
 
 

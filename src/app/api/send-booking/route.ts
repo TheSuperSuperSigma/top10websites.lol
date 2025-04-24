@@ -42,6 +42,8 @@ export async function POST(request: Request) {
         <h3>Customer Information:</h3>
         <p><strong>Email:</strong> ${body.customerInfo.email}</p>
         <p><strong>Address:</strong> ${body.customerInfo.address}</p>
+        <p><strong>Preferred Date:</strong> ${new Date(body.customerInfo.date).toLocaleDateString()}</p>
+        <p><strong>Preferred Time:</strong> ${body.customerInfo.time}</p>
         ${body.customerInfo.phone ? `<p><strong>Phone:</strong> ${body.customerInfo.phone}</p>` : ''}
         
         <h3>Selected Services:</h3>
@@ -65,3 +67,4 @@ export async function POST(request: Request) {
     );
   }
 }
+

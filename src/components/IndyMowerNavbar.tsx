@@ -24,7 +24,7 @@ export default function IndyMowerNavbar() {
             height="24" 
             viewBox="0 0 24 24" 
             fill="none" 
-            stroke="#1B5E20"  // Updated from #2E7D32
+            stroke="#1B5E20"
             strokeWidth="2" 
             strokeLinecap="round"
           >
@@ -54,7 +54,7 @@ export default function IndyMowerNavbar() {
             height="24" 
             viewBox="0 0 24 24" 
             fill="none" 
-            stroke="#1B5E20"  // Updated from #2E7D32
+            stroke="#1B5E20"
             strokeWidth="2" 
             strokeLinecap="round"
           >
@@ -75,6 +75,9 @@ export default function IndyMowerNavbar() {
     </>
   );
 }
+
+
+
 
 
 

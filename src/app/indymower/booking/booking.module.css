@@ -268,6 +268,9 @@
 
 .formGroup {
   margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .formGroup label {
@@ -289,9 +292,17 @@
   border-color: #dc3545 !important;
 }
 
+.helperText {
+  font-size: 0.875rem;
+  color: #666;
+  display: block;
+  margin-top: 0.25rem;
+}
+
 .errorMessage {
   color: #dc3545;
   font-size: 0.875rem;
+  display: block;
   margin-top: 0.25rem;
 }
 
@@ -338,6 +349,7 @@
   margin-top: 0.5rem;
   font-style: italic;
 }
+
 
 
 
