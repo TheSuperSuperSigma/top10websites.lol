@@ -1,15 +1,79 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import styles from './styles.module.css';
 import IndyMowerNavbar from '@/components/IndyMowerNavbar';
 import Link from 'next/link';
 
 export default function IndyMower() {
+  const [activeTab, setActiveTab] = useState('services');
   const containerRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number>(0);
   const progressRef = useRef<number>(0);
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'services':
+        return (
+          <div className={styles.tabContent}>
+            <h2>Our Services</h2>
+            <div className={styles.servicesPreview}>
+              <div className={styles.serviceItem}>
+                <span>🌿</span>
+                <h3>Standard Mowing</h3>
+                <p>Professional cut with complete cleanup</p>
+                <span className={styles.price}>From $35</span>
+              </div>
+              <div className={styles.serviceItem}>
+                <span>✂️</span>
+                <h3>Edge Trimming</h3>
+                <p>Clean edges along walkways and beds</p>
+                <span className={styles.price}>From $10</span>
+              </div>
+              <div className={styles.serviceItem}>
+                <span>🌱</span>
+                <h3>Weed Removal</h3>
+                <p>Thorough weed control service</p>
+                <span className={styles.price}>From $10</span>
+              </div>
+            </div>
+            <Link href="/indymower/services" className={styles.viewMoreButton}>
+              View All Services
+            </Link>
+          </div>
+        );
+      case 'contact':
+        return (
+          <div className={styles.tabContent}>
+            <h2>Contact Us</h2>
+            <div className={styles.contactPreview}>
+              <div className={styles.contactItem}>
+                <span>📧</span>
+                <h3>Email</h3>
+                <a href="mailto:theindymower@gmail.com">theindymower@gmail.com</a>
+              </div>
+              <div className={styles.contactItem}>
+                <span>📍</span>
+                <h3>Location</h3>
+                <p>Indianapolis, Indiana</p>
+              </div>
+              <div className={styles.contactItem}>
+                <span>⏰</span>
+                <h3>Hours</h3>
+                <p>Mon-Fri: 7AM-7PM</p>
+                <p>Sat: 8AM-5PM</p>
+              </div>
+            </div>
+            <Link href="/indymower/contact" className={styles.viewMoreButton}>
+              Contact Details
+            </Link>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
 
   useEffect(() => {
     let startTime: number | null = null;
@@ -82,9 +146,7 @@ export default function IndyMower() {
               <p>Quality service at fair prices. No hidden fees, no surprises - just honest, transparent pricing.</p>
             </div>
           </div>
-          <Link href="/indymower/booking" className={styles.welcomeButton}>
-            Get Your Free Quote Today
-          </Link>
+          {/* Removed Get Your Free Quote Today Link */}
         </div>
 
         <div className={styles.lawnmowerSection}>
@@ -106,20 +168,34 @@ export default function IndyMower() {
               <h2>Professional Lawn Care</h2>
               <p>Experience the finest lawn mowing service in Indianapolis. Our expert team ensures your lawn stays healthy and beautiful all year round.</p>
             </div>
-            <Link href="/indymower/booking" className={styles.verticalBookButton}>
-              B<br/>
-              O<br/>
-              O<br/>
-              K<br/>
-              <br/>
-              N<br/>
-              O<br/>
-              W
-            </Link>
           </div>
+        </div>
+
+        <div className={styles.tabCards}>
+          <Link href="/indymower/services" className={styles.tabCard}>
+            <span className={styles.tabCardIcon}>🌿</span>
+            <h2>Services</h2>
+            <p>Explore our range of professional lawn care services</p>
+          </Link>
+          
+          <Link href="/indymower/contact" className={styles.tabCard}>
+            <span className={styles.tabCardIcon}>📞</span>
+            <h2>Contact</h2>
+            <p>Get in touch with us for quotes and inquiries</p>
+          </Link>
+
+          <Link href="/indymower/booking" className={`${styles.tabCard} ${styles.bookNowCard}`}>
+            <span className={styles.tabCardIcon}>📅</span>
+            <h2>Book Now</h2>
+            <p>Schedule your lawn care service today</p>
+          </Link>
         </div>
       </div>
     </main>
   );
 }
+
+
+
+
 

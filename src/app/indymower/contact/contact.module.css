@@ -10,7 +10,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 80px 2rem 2rem;
-  color: white;
+  color: #333;
 }
 
 .container h1 {
@@ -30,7 +30,7 @@
 }
 
 .contactCard {
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(255, 255, 255, 0.95);
   padding: 2rem;
   border-radius: 10px;
   text-align: center;
@@ -54,7 +54,7 @@
 }
 
 .contactInfo {
-  color: white;
+  color: #333;
   text-decoration: none;
   font-size: 1.1rem;
 }
@@ -64,7 +64,7 @@
 }
 
 .businessHours {
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(255, 255, 255, 0.95);
   padding: 2rem;
   border-radius: 10px;
   max-width: 600px;
@@ -81,13 +81,14 @@
 .hoursGrid {
   display: grid;
   gap: 1rem;
+  color: #333;
 }
 
 .hourRow {
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .hourRow:last-child {

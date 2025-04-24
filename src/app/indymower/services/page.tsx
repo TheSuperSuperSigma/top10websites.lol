@@ -53,7 +53,7 @@ export default function Services() {
       <IndyMowerNavbar />
       <div className={styles.container}>
         <h1>Our Services</h1>
-        <p className={styles.subtitle}>Professional lawn care services for your perfect yard</p>
+        <p className={styles.subtitle}>Professional lawn care services just for you...</p>
         
         <div className={styles.servicesGrid}>
           {services.map(service => (
@@ -72,6 +72,7 @@ export default function Services() {
     </main>
   );
 }
+
 
 
 

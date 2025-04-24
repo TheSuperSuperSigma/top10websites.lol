@@ -323,6 +323,7 @@ export default function Booking() {
                 >
                   Schedule Service
                 </button>
+                <p className={styles.bookingNote}>Please wait a moment while your booking is being confirmed</p>
               </div>
             )}
           </div>
@@ -347,12 +348,5 @@ export default function Booking() {
     </main>
   );
 }
-
-
-
-
-
-
-
 
 

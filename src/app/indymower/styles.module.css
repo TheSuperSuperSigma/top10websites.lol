@@ -51,7 +51,7 @@
   background-color: #f0f0f0;
   margin: 0.5rem 0; /* Reduced from 1rem to 0.5rem */
   border: 2px solid #1B5E20;
-  margin-top: 80vh;
+  margin-top: 2rem; /* Reduced from 80vh to 2rem */
   overflow: visible;
 }
 .lawnmowerContainer {
@@ -127,7 +127,7 @@
   padding: 2.5rem;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1rem;
+  margin-bottom: 2rem; /* Adjusted to maintain consistent spacing */
   text-align: center;
 }
 
@@ -234,26 +234,7 @@
   line-height: 1.6;
 }
 
-.verticalBookButton {
-  position: absolute;
-  right: -600px; /* Changed from -60px to -600px */
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: #1B5E20;
-  color: white;
-  padding: 20px 10px;
-  text-decoration: none;
-  font-family: 'AmericanCaptain', sans-serif; /* Restored original font */
-  font-size: 1.2rem;
-  font-weight: 500;
-  border-radius: 25px;
-  z-index: 5;
-  transition: background-color 0.3s ease;
-}
-
-.verticalBookButton:hover {
-  background-color: #2E7D32;
-}
+/* Remove the .verticalBookButton styles */
 
 .learnMoreButton {
   display: inline-block;
@@ -279,6 +260,156 @@
   }
 }
 
+/* Tab styles */
+.tabsSection {
+  width: 80%;
+  max-width: 1200px;
+  margin: 3rem auto;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
+.tabsContainer {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.tabButton {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.tabButton.activeTab {
+  color: #1B5E20;
+  font-weight: bold;
+}
+
+.tabButton.activeTab::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #1B5E20;
+}
+
+.tabContent {
+  padding: 1rem;
+  text-align: center;
+}
+
+.tabContent h2 {
+  color: #1B5E20;
+  margin-bottom: 2rem;
+}
+
+.servicesPreview, .contactPreview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.serviceItem, .contactItem {
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  text-align: center;
+}
+
+.serviceItem span, .contactItem span {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.price {
+  color: #1B5E20;
+  font-weight: bold;
+  margin-top: 1rem;
+  display: block;
+}
+
+.viewMoreButton {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  background-color: #1B5E20;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  margin-top: 1rem;
+  transition: background-color 0.3s;
+}
+
+.viewMoreButton:hover {
+  background-color: #2E7D32;
+}
+
+.tabCards {
+  display: flex;
+  gap: 2rem;
+  width: 80%;
+  max-width: 1200px;
+  margin: 2rem auto;
+  justify-content: center;
+}
+
+.tabCard {
+  flex: 1;
+  max-width: 400px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 2px solid #1B5E20;
+}
+
+.tabCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.tabCard h2 {
+  color: #1B5E20;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  font-family: 'AmericanCaptain', sans-serif;
+}
+
+.tabCard p {
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.tabCardIcon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .tabCards {
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+  }
+
+  .tabCard {
+    width: 100%;
+  }
+}
 
 
