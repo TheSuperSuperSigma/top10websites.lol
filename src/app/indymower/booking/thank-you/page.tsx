@@ -12,7 +12,7 @@ export default function ThankYou() {
         <div className={styles.thankYouCard}>
           <h1>Thank You for Your Booking!</h1>
           <p>We have received your service request and will contact you shortly to confirm the details.</p>
-          <p>If you don't hear from us within 24 hours, please email us at theindymower@gmail.com</p>
+          <p>If you don&apos;t hear from us within 24 hours, please email us at theindymower@gmail.com</p>
           <Link href="/indymower" className={styles.homeButton}>
             Return to Home
           </Link>

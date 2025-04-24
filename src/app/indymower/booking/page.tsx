@@ -115,13 +115,6 @@ export default function Booking() {
   const isServiceSelected = (service: ServiceOption) => 
     selectedServices.some(s => s.id === service.id);
 
-  const canProceed = () => {
-    if (currentStep === 1) {
-      return selectedServices.some(s => serviceCategories.mowing.some(m => m.id === s.id));
-    }
-    return true;
-  };
-
   const validateCustomerInfo = () => {
     const newErrors: Partial<CustomerInfo> = {};
     
@@ -179,6 +172,21 @@ export default function Booking() {
       case 3: setProgress(75); break;
       case 4: setProgress(100); break;
     }
+  };
+
+  const handleNext = () => {
+    if (currentStep === 1 && selectedServices.length === 0) {
+      alert('Please select at least one service');
+      return;
+    }
+    
+    // Only validate customer info when on step 3
+    if (currentStep === 3 && !validateCustomerInfo()) {
+      return;
+    }
+
+    setCurrentStep(prev => prev + 1);
+    updateProgress(currentStep + 1);
   };
 
   return (
@@ -329,10 +337,7 @@ export default function Booking() {
               </button>
             )}
             {currentStep < 4 && (
-              <button onClick={() => {
-                setCurrentStep(prev => prev + 1);
-                updateProgress(currentStep + 1);
-              }}>
+              <button onClick={handleNext}>
                 Next
               </button>
             )}
@@ -342,6 +347,8 @@ export default function Booking() {
     </main>
   );
 }
+
+
 
 
 

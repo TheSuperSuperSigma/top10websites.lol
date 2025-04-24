@@ -1,16 +1,6 @@
-"use client";
-
 import styles from './services.module.css';
 import IndyMowerNavbar from '@/components/IndyMowerNavbar';
 import Link from 'next/link';
-
-interface Service {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  icon?: string;
-}
 
 export default function Services() {
   const services = [
@@ -82,6 +72,7 @@ export default function Services() {
     </main>
   );
 }
+
 
 
 

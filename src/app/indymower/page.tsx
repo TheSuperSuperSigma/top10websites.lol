@@ -81,6 +81,9 @@ export default function IndyMower() {
               <p>Quality service at fair prices. No hidden fees, no surprises - just honest, transparent pricing.</p>
             </div>
           </div>
+          <Link href="/indymower/booking" className={styles.welcomeButton}>
+            Get Your Free Quote Today
+          </Link>
         </div>
 
         <div className={styles.lawnmowerSection}>
@@ -118,7 +121,6 @@ export default function IndyMower() {
     </main>
   );
 }
-
 
 
 

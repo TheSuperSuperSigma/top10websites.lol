@@ -235,39 +235,49 @@
 }
 
 .verticalBookButton {
-  position: relative;
+  position: absolute;
+  right: -600px; /* Changed from -60px to -600px */
+  top: 50%;
+  transform: translateY(-50%);
   background-color: #1B5E20;
   color: white;
-  padding: 15px 30px; /* Increased horizontal padding */
-  border: none;
-  border-radius: 8px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  padding: 20px 10px;
   text-decoration: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; /* Added to center content vertically */
-  z-index: 4;
-  margin-left: 125px;
-  letter-spacing: 0.5em;
-  text-align: center;
-  line-height: 1.5; /* Adjusted line height */
-  width: 60px; /* Added fixed width */
-}
-
-.verticalBookButton br {
-  line-height: 1.5; /* Consistent spacing between letters */
+  font-family: 'AmericanCaptain', sans-serif; /* Restored original font */
+  font-size: 1.2rem;
+  font-weight: 500;
+  border-radius: 25px;
+  z-index: 5;
+  transition: background-color 0.3s ease;
 }
 
 .verticalBookButton:hover {
-  background-color: #154c19;
+  background-color: #2E7D32;
 }
 
+.learnMoreButton {
+  display: inline-block;
+  background-color: #1B5E20;
+  color: white;
+  padding: 12px 24px;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
+}
 
+.learnMoreButton:hover {
+  background-color: #2E7D32;
+}
 
+/* Make sure the button remains visible on mobile */
+@media (max-width: 768px) {
+  .verticalBookButton {
+    right: -40px; /* Keep mobile positioning close to edge */
+    font-size: 1rem;
+    padding: 15px 8px;
+  }
+}
 
 
 
