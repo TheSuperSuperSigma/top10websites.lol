@@ -9,15 +9,7 @@ const nextConfig: NextConfig = {
       }
     ]
   },
-  async redirects() {
-    return [
-      {
-        source: '/indymower',
-        destination: 'https://indymower.top10websites.lol',
-        permanent: true,
-      },
-    ];
-  },
+  // Remove the redirects section since we want to keep content at /indymower
 };
 
 export default nextConfig;
