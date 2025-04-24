@@ -52,6 +52,7 @@ export default function IndyMower() {
 
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // Check initial position
+    requestAnimationFrame(animate); // Add this line to use the animate function
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -66,7 +67,7 @@ export default function IndyMower() {
         <h1>IndyMower</h1>
         
         <div className={styles.contentBox}>
-          <h2>Welcome to Indianapolis' Premier Lawn Care Service</h2>
+          <h2>Welcome to Indianapolis&apos; Premier Lawn Care Service</h2>
           <div className={styles.welcomeContent}>
             <div className={styles.welcomeSection}>
               <h3>✓ Professional Service</h3>
@@ -121,32 +122,4 @@ export default function IndyMower() {
     </main>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
