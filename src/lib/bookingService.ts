@@ -8,13 +8,19 @@ import {
   Timestamp 
 } from "firebase/firestore";
 
+interface CustomerInfo {
+  date: string;
+  time: string;
+  email: string;
+  address: string;
+  phone?: string;
+}
+
 interface BookingDetails {
-  customerInfo: {
-    date: string;
-    time: string;
-    [key: string]: any; // for other customer info fields
-  };
-  [key: string]: any; // for other booking fields
+  customerInfo: CustomerInfo;
+  services: string;
+  totalPrice: number;
+  timestamp: string;
 }
 
 // Check if a time slot is available
@@ -137,6 +143,7 @@ export async function testFirebaseConnection() {
     throw error;
   }
 }
+
 
 
 

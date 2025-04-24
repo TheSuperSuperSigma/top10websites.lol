@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import styles from './booking.module.css';
 import IndyMowerNavbar from '@/components/IndyMowerNavbar';
 import { useRouter } from 'next/navigation';
-import { getBookedTimes, createBooking, testFirebaseConnection } from '@/lib/bookingService';
+import { getBookedTimes, createBooking } from '@/lib/bookingService';
 
 interface ServiceOption {
   id: string;
@@ -470,5 +470,6 @@ export default function Booking() {
     </main>
   );
 }
+
 
 
