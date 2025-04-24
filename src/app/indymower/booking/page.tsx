@@ -107,22 +107,6 @@ export default function Booking() {
     ]
   };
 
-  const isToday = (date: string) => {
-    const today = new Date();
-    const selectedDate = new Date(date);
-    return (
-      selectedDate.getDate() === today.getDate() &&
-      selectedDate.getMonth() === today.getMonth() &&
-      selectedDate.getFullYear() === today.getFullYear()
-    );
-  };
-
-  const getCurrentTime = () => {
-    const now = new Date();
-    const hours = now.getHours();
-    return `${hours > 12 ? hours - 12 : hours}:00 ${hours >= 12 ? 'PM' : 'AM'}`;
-  };
-
   const getAvailableTimes = async (selectedDate: string) => {
     const timeSlots = [
       "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
@@ -235,9 +219,9 @@ export default function Booking() {
       }
 
       router.push('/indymower/booking/thank-you');
-    } catch (error: any) {
+    } catch (error: Error | unknown) {
       console.error('Error submitting booking:', error);
-      if (error.message === "This time slot is no longer available") {
+      if (error instanceof Error && error.message === "This time slot is no longer available") {
         alert('Sorry, this time slot has just been booked. Please select another time.');
         // Refresh available times
         if (customerInfo.date) {
@@ -278,28 +262,6 @@ export default function Booking() {
   return (
     <main className={styles.main}>
       <IndyMowerNavbar />
-      <button 
-        onClick={async () => {
-          try {
-            const result = await testFirebaseConnection();
-            alert('Test successful! Check console for details.');
-          } catch (error) {
-            console.error('Test error:', error);
-            alert('Test failed! Check console for details.');
-          }
-        }}
-        style={{
-          padding: '10px 20px',
-          margin: '20px',
-          backgroundColor: '#ff4444',
-          color: 'white',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer'
-        }}
-      >
-        Test Firebase Connection
-      </button>
       <div className={styles.container}>
         <h1>Design Your Perfect Lawn Service</h1>
         
@@ -508,12 +470,5 @@ export default function Booking() {
     </main>
   );
 }
-
-
-
-
-
-
-
 
 

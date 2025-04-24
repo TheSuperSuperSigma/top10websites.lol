@@ -1,41 +1,39 @@
-[15:56:48.828] Cloning github.com/TheSuperSuperSigma/top10websites.lol (Branch: master, Commit: 930a410)
-[15:56:49.855] Cloning completed: 1.027s
-[15:56:52.048] Restored build cache from previous deployment (Fx7XMVxyCyp56a7JCanQ4MYLbAcR)
-[15:56:52.161] Running build in Washington, D.C., USA (East) – iad1
-[15:56:52.607] Running "vercel build"
-[15:56:52.986] Vercel CLI 41.6.2
-[15:56:53.284] Installing dependencies...
-[15:56:54.983] 
-[15:56:54.984] up to date in 1s
-[15:56:54.985] 
-[15:56:54.985] 148 packages are looking for funding
-[15:56:54.985]   run `npm fund` for details
-[15:56:55.021] Detected Next.js version: 15.2.4
-[15:56:55.025] Running "npm run build"
-[15:56:55.145] 
-[15:56:55.146] > top10websites.lol@0.1.0 build
-[15:56:55.146] > next build
-[15:56:55.147] 
-[15:56:56.084]    ▲ Next.js 15.2.4
-[15:56:56.086] 
-[15:56:56.123]    Creating an optimized production build ...
-[15:57:07.533]  ✓ Compiled successfully
-[15:57:07.539]    Linting and checking validity of types ...
-[15:57:12.963] 
-[15:57:12.964] Failed to compile.
-[15:57:12.964] 
-[15:57:12.964] ./src/app/indymower/booking/page.tsx
-[15:57:12.965] 110:9  Error: 'isToday' is assigned a value but never used. Allowed unused vars must match /^(Script|Head)$/u.  @typescript-eslint/no-unused-vars
-[15:57:12.965] 120:9  Error: 'getCurrentTime' is assigned a value but never used. Allowed unused vars must match /^(Script|Head)$/u.  @typescript-eslint/no-unused-vars
-[15:57:12.965] 238:21  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-[15:57:12.965] 284:19  Error: 'result' is assigned a value but never used. Allowed unused vars must match /^(Script|Head)$/u.  @typescript-eslint/no-unused-vars
-[15:57:12.966] 
-[15:57:12.966] ./src/lib/bookingService.ts
-[15:57:12.967] 74:53  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-[15:57:12.967] 
-[15:57:12.968] ./src/lib/indyMowerFirebase.ts
-[15:57:12.968] 23:9  Error: 'analytics' is assigned a value but never used. Allowed unused vars must match /^(Script|Head)$/u.  @typescript-eslint/no-unused-vars
-[15:57:12.968] 
-[15:57:12.968] info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
-[15:57:12.997] Error: Command "npm run build" exited with 1
-[15:57:13.332] 
+[16:00:57.476] Cloning github.com/TheSuperSuperSigma/top10websites.lol (Branch: master, Commit: 32cd12f)
+[16:00:58.411] Cloning completed: 934.000ms
+[16:01:00.628] Restored build cache from previous deployment (Fx7XMVxyCyp56a7JCanQ4MYLbAcR)
+[16:01:00.735] Running build in Washington, D.C., USA (East) – iad1
+[16:01:01.176] Running "vercel build"
+[16:01:01.543] Vercel CLI 41.6.2
+[16:01:01.848] Installing dependencies...
+[16:01:03.574] 
+[16:01:03.575] up to date in 1s
+[16:01:03.575] 
+[16:01:03.575] 148 packages are looking for funding
+[16:01:03.575]   run `npm fund` for details
+[16:01:03.605] Detected Next.js version: 15.2.4
+[16:01:03.609] Running "npm run build"
+[16:01:03.723] 
+[16:01:03.723] > top10websites.lol@0.1.0 build
+[16:01:03.724] > next build
+[16:01:03.724] 
+[16:01:04.639]    ▲ Next.js 15.2.4
+[16:01:04.639] 
+[16:01:04.669]    Creating an optimized production build ...
+[16:01:16.051]  ✓ Compiled successfully
+[16:01:16.056]    Linting and checking validity of types ...
+[16:01:21.846] 
+[16:01:21.847] Failed to compile.
+[16:01:21.847] 
+[16:01:21.847] ./src/app/indymower/booking/page.tsx
+[16:01:21.848] 110:9  Error: 'isToday' is assigned a value but never used. Allowed unused vars must match /^(Script|Head)$/u.  @typescript-eslint/no-unused-vars
+[16:01:21.848] 120:9  Error: 'getCurrentTime' is assigned a value but never used. Allowed unused vars must match /^(Script|Head)$/u.  @typescript-eslint/no-unused-vars
+[16:01:21.848] 238:21  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+[16:01:21.848] 284:19  Error: 'result' is assigned a value but never used. Allowed unused vars must match /^(Script|Head)$/u.  @typescript-eslint/no-unused-vars
+[16:01:21.849] 
+[16:01:21.849] ./src/lib/bookingService.ts
+[16:01:21.849] 15:20  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+[16:01:21.850] 17:18  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+[16:01:21.850] 
+[16:01:21.850] info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+[16:01:21.884] Error: Command "npm run build" exited with 1
+[16:01:22.221] 
